@@ -98,7 +98,7 @@ jobs:
     name: Deploy to Kubernetes
     needs: docker
     if: vars.EKS_CLUSTER_NAME != ''
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     environment: production
     permissions:
       contents: read
