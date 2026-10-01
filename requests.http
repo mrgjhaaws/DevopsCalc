@@ -1,0 +1,37 @@
+### Try the API with the "REST Client" extension (click "Send Request" above each line).
+### Start the app first: F5 in VS Code, or docker compose up --build
+
+@host = http://localhost:8080
+
+### Health
+GET {{host}}/health
+
+### Add
+GET {{host}}/api/add?a=0.1&b=0.2
+
+### Subtract
+GET {{host}}/api/subtract?a=10&b=4
+
+### Multiply
+GET {{host}}/api/multiply?a=6&b=7
+
+### Divide
+GET {{host}}/api/divide?a=10&b=4
+
+### Divide by zero (returns 400)
+GET {{host}}/api/divide?a=1&b=0
+
+### Square root
+GET {{host}}/api/sqrt?a=144
+
+### Percentage: 25% of 80
+GET {{host}}/api/percentage?mode=of&a=25&b=80
+
+### Percentage: change from 80 to 100
+GET {{host}}/api/percentage?mode=change&a=80&b=100
+
+### Percentage: 20 is what % of 80
+GET {{host}}/api/percentage?mode=what&a=20&b=80
+
+### Prometheus metrics
+GET {{host}}/metrics

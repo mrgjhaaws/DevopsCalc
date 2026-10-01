@@ -1,0 +1,33 @@
+groups:
+  - name: calculator
+    rules:
+      - alert: CalculatorDown
+        expr: up{job="calculator"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Calculator is down"
+          description: "Prometheus has not been able to scrape the calculator for 1 minute."
+
+      - alert: CalculatorHighErrorRate
+        expr: >
+          sum(rate(calculator_requests_total{status="error"}[5m]))
+          / sum(rate(calculator_requests_total[5m])) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "More than half of calculator requests are failing"
+          description: "Error ratio has been above 50% for 5 minutes (bad input such as division by zero counts as an error)."
+
+      - alert: CalculatorSlowRequests
+        expr: >
+          rate(calculator_request_duration_seconds_sum[5m])
+          / rate(calculator_request_duration_seconds_count[5m]) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Calculator responses are slow"
+          description: "Average request duration has been above 500 ms for 5 minutes."

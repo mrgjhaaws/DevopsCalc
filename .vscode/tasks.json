@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    { "label": "Maven: test", "type": "shell", "command": "mvn -B test", "group": "test", "problemMatcher": [] },
+    { "label": "Maven: package", "type": "shell", "command": "mvn -B clean package", "group": "build", "problemMatcher": [] },
+    { "label": "Docker: build image", "type": "shell", "command": "docker build -t devops-calculator:local .", "problemMatcher": [] },
+    { "label": "Compose: up (app + Prometheus + Grafana)", "type": "shell", "command": "docker compose up --build", "isBackground": true, "problemMatcher": [] },
+    { "label": "Compose: down", "type": "shell", "command": "docker compose down", "problemMatcher": [] },
+    { "label": "Terraform: validate", "type": "shell", "command": "terraform init -backend=false && terraform validate", "options": { "cwd": "${workspaceFolder}/terraform" }, "problemMatcher": [] },
+    { "label": "Ansible: syntax check", "type": "shell", "command": "ansible-playbook playbook.yml --syntax-check -e image=x", "options": { "cwd": "${workspaceFolder}/ansible" }, "problemMatcher": [] }
+  ]
+}

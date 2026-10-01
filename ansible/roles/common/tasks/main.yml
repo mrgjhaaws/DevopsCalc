@@ -1,0 +1,21 @@
+---
+- name: Install base packages
+  ansible.builtin.dnf:
+    name:
+      - docker
+      - git
+      - curl
+      - jq
+    state: present
+
+- name: Enable and start Docker
+  ansible.builtin.service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Allow the SSH user to run Docker without sudo
+  ansible.builtin.user:
+    name: "{{ ansible_user | default('ec2-user') }}"
+    groups: docker
+    append: true

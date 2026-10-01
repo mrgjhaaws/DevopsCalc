@@ -1,0 +1,30 @@
+# Java / Maven
+target/
+*.class
+*.log
+hs_err_pid*
+
+# IDEs (shared VS Code config in .vscode/ IS committed)
+.idea/
+*.iml
+.vscode/*.code-workspace
+
+# Terraform (commit .terraform.lock.hcl and terraform.tfvars, never state)
+terraform/.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfplan
+
+# Secrets: never commit these
+*.pem
+*.key
+.env
+.env.*
+
+# Ansible
+*.retry
+
+# OS
+.DS_Store
+Thumbs.db

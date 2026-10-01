@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run DevOps Calculator",
+      "request": "launch",
+      "mainClass": "com.example.app.App",
+      "projectName": "devops-calculator",
+      "env": { "PORT": "8080" }
+    }
+  ]
+}

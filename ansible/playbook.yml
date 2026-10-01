@@ -1,0 +1,59 @@
+---
+# Configures the EC2 server and runs the calculator container from ECR.
+#
+#   cd ansible
+#   ansible-playbook playbook.yml -e image=<ecr_repository_url>:latest
+- name: Configure the server and deploy the calculator
+  hosts: calculator
+  become: true
+
+  vars:
+    app_name: devops-calculator
+    app_port: 8080
+    aws_region: ap-south-1
+    image: ""
+
+  pre_tasks:
+    - name: Make sure an image was provided
+      ansible.builtin.assert:
+        that: image | length > 0
+        fail_msg: "Pass the image with -e image=<account>.dkr.ecr.<region>.amazonaws.com/devops-calculator:latest"
+
+  roles:
+    - common
+
+  tasks:
+    - name: Log in to Amazon ECR
+      ansible.builtin.shell: |
+        set -o pipefail
+        aws ecr get-login-password --region {{ aws_region }} \
+          | docker login --username AWS --password-stdin {{ image.split('/')[0] }}
+      args:
+        executable: /bin/bash
+      changed_when: false
+
+    - name: Pull the application image
+      ansible.builtin.command: docker pull {{ image }}
+      register: pull_result
+      changed_when: "'Downloaded newer image' in pull_result.stdout"
+
+    - name: Remove the old container if it exists
+      ansible.builtin.command: docker rm -f {{ app_name }}
+      register: rm_result
+      changed_when: rm_result.rc == 0
+      failed_when: rm_result.rc != 0 and 'No such container' not in rm_result.stderr
+
+    - name: Start the container
+      ansible.builtin.command: >
+        docker run -d --name {{ app_name }} --restart unless-stopped
+        -p {{ app_port }}:8080 -e PORT=8080 {{ image }}
+      changed_when: true
+
+    - name: Wait until the health check passes
+      ansible.builtin.uri:
+        url: "http://localhost:{{ app_port }}/health"
+        status_code: 200
+      register: health
+      retries: 10
+      delay: 3
+      until: health.status == 200

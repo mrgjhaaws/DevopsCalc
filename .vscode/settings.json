@@ -1,0 +1,24 @@
+{
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.compile.nullAnalysis.mode": "automatic",
+  "editor.formatOnSave": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "[terraform]": {
+    "editor.defaultFormatter": "HashiCorp.terraform"
+  },
+  "[yaml]": {
+    "editor.tabSize": 2
+  },
+  "[java]": {
+    "editor.tabSize": 4
+  },
+  "yaml.schemas": {
+    "kubernetes": "k8s/*.yaml"
+  },
+  "files.associations": {
+    "**/ansible/playbook.yml": "ansible",
+    "**/ansible/roles/**/*.yml": "ansible"
+  }
+}
